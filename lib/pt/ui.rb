@@ -372,6 +372,17 @@ class PT::UI
     end
   end
 
+  def labeled
+    if @params[0]
+      label = @params[0].to_s
+      title("Tasks with label #{label} in #{project_to_s}")
+      tasks = @client.get_tasks_by_label(@project, label)
+      PT::TasksCustomTable.new(tasks, [:owned_by, :estimate]).print
+    else
+      message("You need to provide a label name.")
+    end
+  end
+
   def updates
     activities = @client.get_activities(@project, @params[0])
     tasks = @client.get_my_work(@project, @local_config[:user_name])
@@ -402,6 +413,7 @@ class PT::UI
     message("pt accept    [id]                      # mark a task as accepted")
     message("pt reject    [id] [reason]             # mark a task as rejected, explaining why")
     message("pt find      [query]                   # looks in your tasks by title and presents it")
+    message("pt labeled   [label]                   # shows all tasks marked with a label")
     message("pt done      [id] ~[0-3] ~[comment]    # lazy mans finish task, does everything")
     message("pt list      [member]                  # list all tasks for another pt user")
     message("pt updates   [number]                  # shows number recent activity from your current project")
