@@ -78,6 +78,10 @@ class PT::Client
     project.stories.all.select{ |t| t.owned_by == nil }
   end
 
+  def get_tasks_by_label(project, label)
+    project.stories.all :label => label
+  end
+
   def get_members(project)
     project.memberships.all
   end
