@@ -14,7 +14,7 @@ module PT
       if @rows.empty?
         puts "\n         -- empty list --         \n"
       else
-        self.class.table @rows, :fields => [:num] + self.class.fields, :unicode => true, :description => false
+        self.class.table @rows, :fields => [:num] + self.fields, :unicode => true, :description => false
       end
     end
 
@@ -25,6 +25,10 @@ module PT
 
     def length
       @rows.length
+    end
+
+    def fields
+      self.class.fields
     end
 
     def self.fields
@@ -47,6 +51,19 @@ module PT
 
     def self.fields
       [:name, :current_state]
+    end
+
+  end
+
+  class TasksCustomTable < DataTable
+
+    def initialize(dataset, fields)
+      super(dataset)
+      @fields_ = fields
+    end
+
+    def fields
+      [:name] + @fields_
     end
 
   end
